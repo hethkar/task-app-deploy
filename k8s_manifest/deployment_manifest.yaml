@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: bookstore-api
+  name: bookstore-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bookstore-api
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: bookstore-api
+    spec:
+      containers:
+      - image: hethkar/bookstore-api:latest
+        name: bookstore-api
+        ports:
+          - containerPort: 80
+        resources: {}
+status: {}
