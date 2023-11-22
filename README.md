@@ -44,5 +44,5 @@ Use something like https://dbeaver.io/download/
 **Creating database deployment with configmap and pvc** 
 * `kubectl apply -f k8s_manifest/alldb-one.yaml`
 
-**To login to the mysql database**
-* `kubectl exec --stdin --tty "$(kubectl get pods -l "app=mysql" -o jsonpath="{.items[0].metadata.name}")" -- mysql -u'root' -p'password'`
+**To login to the postgres database**
+* `kubectl exec --stdin --tty "$(kubectl get pods -l "app=postgres" -o jsonpath="{.items[0].metadata.name}")" -- psql -h localhost -U postgres`
