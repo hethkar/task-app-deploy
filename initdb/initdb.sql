@@ -1,5 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS bookstore;
-USE bookstore;
+
 CREATE TABLE IF NOT EXISTS bookstore.book (
     id serial primary key,
     name text not null,
