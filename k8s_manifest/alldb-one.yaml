@@ -1,52 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: postgres-deployment
   labels:
-    app: mysql
+    app: postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: postgres
   template:
     metadata:
       labels:
-        app: mysql
+        app: postgres
     spec:
       containers:
-        - name: mysql
-          image: mysql:5.7
-          ports:
-            - containerPort: 3306
+        - name: postgres
+          image: postgres:13
           env:
-            - name: MYSQL_ROOT_PASSWORD
+            - name: POSTGRES_USER 
+              value: postgres
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mysql-secrets
-                  key: ROOT_PASSWORD
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+          ports:
+            - containerPort: 5432
+              name: postgres
           volumeMounts:
-            - name: mysql-initdb
+            - name: postgres-initdb
               mountPath: /docker-entrypoint-initdb.d
-            - mountPath: "/var/lib/mysql"
-              subPath: "mysql"
-              name: mysql-data
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
       volumes:
-        - name: mysql-initdb
+        - name: postgres-initdb
           configMap:
-            name: mysql-initdb-config
-        - name: mysql-data
+            name: postgres-initdb-config
+        - name: postgres-data
           persistentVolumeClaim:
-            claimName: mysql-data-pvc
+            claimName: postgres-data-pvc
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysql-initdb-config
+  name: postgres-initdb-config
 data:
   init.sql: |
     CREATE SCHEMA IF NOT EXISTS bookstore;
-    USE bookstore;
     CREATE TABLE friends (id INT, name VARCHAR(256), age INT, gender VARCHAR(3));
     CREATE TABLE IF NOT EXISTS bookstore.book (id serial primary key, name text not null, year int not null, author text not null);
     INSERT INTO bookstore.book
@@ -66,10 +67,11 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-data-pvc
+  name: postgres-data-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
+
