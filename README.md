@@ -4,7 +4,6 @@
 ### Change Highlights
 
 * Updated `requirements.txt`
-* Updated `initdb/initdb.sql`
 * Added `Dockerfile`
 * Added `k8s_manifest/` dir containing kubernetes Manifests yamls
 
