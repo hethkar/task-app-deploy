@@ -46,3 +46,5 @@ Use something like https://dbeaver.io/download/
 
 **To login to the postgres database**
 * `kubectl exec --stdin --tty "$(kubectl get pods -l "app=postgres" -o jsonpath="{.items[0].metadata.name}")" -- psql -h localhost -U postgres`
+
+test1
